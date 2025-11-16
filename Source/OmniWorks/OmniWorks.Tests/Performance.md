@@ -18,24 +18,24 @@ All numbers below were collected on the current development machine using:
 
 ## 1. Summary of Key Scenarios
 
-### 1.1 Realistic Pathfinder Base Scenarios
+### 1.1 Realistic Reference Base Scenarios
 
-These tests model a reference Pathfinder base:
+These tests model a reference base:
 
-- 5 × Hacienda (6 converters each) → 30 converters  
-- 4 × Casa (2 converters each) → 8 converters  
+- 5 × factories (6 converters each) → 30 converters  
+- 4 × habs (2 converters each) → 8 converters  
 - **Total: 38 converters**
 
 Using synthetic converters based on statistics gathered from the real KSP converters.
 
 | Test Name                                                                          | Scenario                                                                 | Converters | Avg ms/tick |
 |------------------------------------------------------------------------------------|--------------------------------------------------------------------------|-----------:|------------:|
-| `Broker_Performance_ReferencePathfinderBase_IsUnderBudget`                         | Reference base, “average” converters (~2 inputs, 1 output)              |        38  | **0.0026**  |
-| `Broker_Performance_ReferencePathfinderBase_MaxFanInFanOutConverters_IsUnderBudget`| Reference base, worst-case fan-in/out (5 inputs, 3 outputs per converter)|        38  | **0.0037**  |
+| `Broker_Performance_ReferenceBase_IsUnderBudget`                         | Reference base, “average” converters (~2 inputs, 1 output)                         |        38  | **0.0026**  |
+| `Broker_Performance_ReferenceBase_MaxFanInFanOutConverters_IsUnderBudget`| Reference base, worst-case fan-in/out (5 inputs, 3 outputs per converter)          |        38  | **0.0037**  |
 
 Interpretation:
 
-- A mid-sized Pathfinder base is processed in **~2.6–3.7 microseconds per tick**.
+- A mid-sized reference base is processed in **~2.6–3.7 microseconds per tick**.
 - This is effectively free compared to a 20 ms Unity FixedUpdate frame.
 
 ---

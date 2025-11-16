@@ -118,17 +118,17 @@ namespace OmniWorks.Tests
         }
 
         /// <summary>
-        /// Performance Test 2 – Reference Pathfinder Base (5 Haciendas, 4 Casas)
+        /// Performance Test 2 – Reference Base (5 factories, 4 habs)
         ///
         /// PURPOSE:
         ///     Measures the average cost of a single OmniResourceBroker tick for a
-        ///     "reference design" Pathfinder base, using synthetic converters that
+        ///     "reference design" base, using synthetic converters that
         ///     statistically approximate the real KSP converters but do NOT depend
         ///     on any game code or configuration files.
         ///
         ///     Reference base:
-        ///         • 5 Hacienda parts, each with 6 converters  → 30 converters
-        ///         • 4 Casa parts, each with 2 converters      →  8 converters
+        ///         • 5 Factory parts, each with 6 converters  → 30 converters
+        ///         • 4 Hab parts, each with 2 converters      →  8 converters
         ///           --------------------------------------------------------
         ///           Total converters                          → 38 converters
         ///
@@ -146,17 +146,17 @@ namespace OmniWorks.Tests
         ///        but will still flag obvious regressions.)
         /// </summary>
         [Fact]
-        public void Broker_Performance_ReferencePathfinderBase_IsUnderBudget()
+        public void Broker_Performance_ReferenceBase_IsUnderBudget()
         {
             // --- Arrange ---
-            const int haciendaCount = 5;
-            const int convertersPerHacienda = 6;
-            const int casaCount = 4;
-            const int convertersPerCasa = 2;
+            const int factoryCount = 5;
+            const int convertersPerFactory = 6;
+            const int habCount = 4;
+            const int convertersPerHab = 2;
 
-            const int haciendaConverterCount = haciendaCount * convertersPerHacienda; // 30
-            const int casaConverterCount = casaCount * convertersPerCasa;             //  8
-            const int totalConverterCount = haciendaConverterCount + casaConverterCount; // 38
+            const int factoryConverterCount = factoryCount * convertersPerFactory; // 30
+            const int habConverterCount = habCount * convertersPerHab;             //  8
+            const int totalConverterCount = factoryConverterCount + habConverterCount; // 38
 
             // From the observed statistics:
             const double averageInputThroughputPerConverter = 17.27;  // units/sec (approx)
@@ -171,16 +171,16 @@ namespace OmniWorks.Tests
             var broker = new OmniResourceBroker();
             var contexts = new List<MultiResourceConverterContext>(totalConverterCount);
 
-            // "Hacienda" converters: 2 inputs (1,2), 1 output (100)
-            int[] haciendaInputResourceIds = { 1, 2 };
-            int[] haciendaOutputResourceIds = { 100 };
+            // "Factory" converters: 2 inputs (1,2), 1 output (100)
+            int[] factoryInputResourceIds = { 1, 2 };
+            int[] factoryOutputResourceIds = { 100 };
 
-            for (int index = 0; index < haciendaConverterCount; index++)
+            for (int index = 0; index < factoryConverterCount; index++)
             {
                 var context = new MultiResourceConverterContext(
-                    inputResourceIds: haciendaInputResourceIds,
+                    inputResourceIds: factoryInputResourceIds,
                     inputAmountPerSecond: inputAmountPerSecond,
-                    outputResourceIds: haciendaOutputResourceIds,
+                    outputResourceIds: factoryOutputResourceIds,
                     outputAmountPerSecond: outputAmountPerSecond);
 
                 var converter = new OmniResourceConverter();
@@ -190,16 +190,16 @@ namespace OmniWorks.Tests
                 contexts.Add(context);
             }
 
-            // "Casa" converters: 2 inputs (2,3), 1 output (101)
-            int[] casaInputResourceIds = { 2, 3 };
-            int[] casaOutputResourceIds = { 101 };
+            // "Hab" converters: 2 inputs (2,3), 1 output (101)
+            int[] habInputResourceIds = { 2, 3 };
+            int[] habOutputResourceIds = { 101 };
 
-            for (int index = 0; index < casaConverterCount; index++)
+            for (int index = 0; index < habConverterCount; index++)
             {
                 var context = new MultiResourceConverterContext(
-                    inputResourceIds: casaInputResourceIds,
+                    inputResourceIds: habInputResourceIds,
                     inputAmountPerSecond: inputAmountPerSecond,
-                    outputResourceIds: casaOutputResourceIds,
+                    outputResourceIds: habOutputResourceIds,
                     outputAmountPerSecond: outputAmountPerSecond);
 
                 var converter = new OmniResourceConverter();
@@ -232,7 +232,7 @@ namespace OmniWorks.Tests
 
             PerfTestLog.Report(
                 testOutput,
-                nameof(Broker_Performance_ReferencePathfinderBase_IsUnderBudget),
+                nameof(Broker_Performance_ReferenceBase_IsUnderBudget),
                 averageMillisecondsPerTick);
 
             // --- Assert ---
@@ -240,22 +240,22 @@ namespace OmniWorks.Tests
 
             Assert.True(
                 averageMillisecondsPerTick < maxAverageMillisecondsPerTick,
-                $"Reference Pathfinder base average milliseconds per tick ({averageMillisecondsPerTick:F4} ms) " +
+                $"Reference base average milliseconds per tick ({averageMillisecondsPerTick:F4} ms) " +
                 $"exceeds performance budget of {maxAverageMillisecondsPerTick:F3} ms.");
         }
 
         /// <summary>
-        /// Performance Test 3 – Reference Pathfinder Base with Max Fan-In/Fan-Out Converters
+        /// Performance Test 3 – Reference Base with Max Fan-In/Fan-Out Converters
         ///
         /// PURPOSE:
         ///     Measures the average cost of a single OmniResourceBroker tick when the
-        ///     reference Pathfinder base (5 Haciendas, 4 Casas) is populated with
+        ///     reference base (5 factories, 4 habs) is populated with
         ///     synthetic converters that represent the worst-case fan-in / fan-out
         ///     pattern observed in the real converter data.
         ///
         ///     Reference base:
-        ///         • 5 Hacienda parts, each with 6 converters  → 30 converters
-        ///         • 4 Casa parts, each with 2 converters      →  8 converters
+        ///         • 5 Factory parts, each with 6 converters  → 30 converters
+        ///         • 4 Hab parts, each with 2 converters      →  8 converters
         ///           --------------------------------------------------------
         ///           Total converters                          → 38 converters
         ///
@@ -275,17 +275,17 @@ namespace OmniWorks.Tests
         ///        enumeration or ledger handling.)
         /// </summary>
         [Fact]
-        public void Broker_Performance_ReferencePathfinderBase_MaxFanInFanOutConverters_IsUnderBudget()
+        public void Broker_Performance_ReferenceBase_MaxFanInFanOutConverters_IsUnderBudget()
         {
             // --- Arrange ---
-            const int haciendaCount = 5;
-            const int convertersPerHacienda = 6;
-            const int casaCount = 4;
-            const int convertersPerCasa = 2;
+            const int factoryCount = 5;
+            const int convertersPerFactory = 6;
+            const int habCount = 4;
+            const int convertersPerHab = 2;
 
-            const int haciendaConverterCount = haciendaCount * convertersPerHacienda; // 30
-            const int casaConverterCount = casaCount * convertersPerCasa;             //  8
-            const int totalConverterCount = haciendaConverterCount + casaConverterCount; // 38
+            const int factoryConverterCount = factoryCount * convertersPerFactory; // 30
+            const int habConverterCount = habCount * convertersPerHab;             //  8
+            const int totalConverterCount = factoryConverterCount + habConverterCount; // 38
 
             // From the observed statistics:
             const double averageInputThroughputPerConverter = 17.27;  // units/sec (approx)
@@ -301,16 +301,16 @@ namespace OmniWorks.Tests
             var broker = new OmniResourceBroker();
             var contexts = new List<MultiResourceConverterContext>(totalConverterCount);
 
-            // "Hacienda" converters: 5 inputs (1..5), 3 outputs (100..102)
-            int[] haciendaInputResourceIds = { 1, 2, 3, 4, 5 };
-            int[] haciendaOutputResourceIds = { 100, 101, 102 };
+            // "Factory" converters: 5 inputs (1..5), 3 outputs (100..102)
+            int[] factoryInputResourceIds = { 1, 2, 3, 4, 5 };
+            int[] factoryOutputResourceIds = { 100, 101, 102 };
 
-            for (int index = 0; index < haciendaConverterCount; index++)
+            for (int index = 0; index < factoryConverterCount; index++)
             {
                 var context = new MultiResourceConverterContext(
-                    inputResourceIds: haciendaInputResourceIds,
+                    inputResourceIds: factoryInputResourceIds,
                     inputAmountPerSecond: inputAmountPerSecond,
-                    outputResourceIds: haciendaOutputResourceIds,
+                    outputResourceIds: factoryOutputResourceIds,
                     outputAmountPerSecond: outputAmountPerSecond);
 
                 var converter = new OmniResourceConverter();
@@ -320,16 +320,16 @@ namespace OmniWorks.Tests
                 contexts.Add(context);
             }
 
-            // "Casa" converters: 5 inputs (6..10), 3 outputs (110..112)
-            int[] casaInputResourceIds = { 6, 7, 8, 9, 10 };
-            int[] casaOutputResourceIds = { 110, 111, 112 };
+            // "Hab" converters: 5 inputs (6..10), 3 outputs (110..112)
+            int[] habInputResourceIds = { 6, 7, 8, 9, 10 };
+            int[] habOutputResourceIds = { 110, 111, 112 };
 
-            for (int index = 0; index < casaConverterCount; index++)
+            for (int index = 0; index < habConverterCount; index++)
             {
                 var context = new MultiResourceConverterContext(
-                    inputResourceIds: casaInputResourceIds,
+                    inputResourceIds: habInputResourceIds,
                     inputAmountPerSecond: inputAmountPerSecond,
-                    outputResourceIds: casaOutputResourceIds,
+                    outputResourceIds: habOutputResourceIds,
                     outputAmountPerSecond: outputAmountPerSecond);
 
                 var converter = new OmniResourceConverter();
@@ -362,7 +362,7 @@ namespace OmniWorks.Tests
 
             PerfTestLog.Report(
                 testOutput,
-                nameof(Broker_Performance_ReferencePathfinderBase_MaxFanInFanOutConverters_IsUnderBudget),
+                nameof(Broker_Performance_ReferenceBase_MaxFanInFanOutConverters_IsUnderBudget),
                 averageMillisecondsPerTick);
 
             // --- Assert ---
@@ -375,17 +375,17 @@ namespace OmniWorks.Tests
         }
 
         /// <summary>
-        /// Performance Test 4 – Reference Pathfinder Base with Slowest-Throughput Converters
+        /// Performance Test 4 – Reference Base with Slowest-Throughput Converters
         ///
         /// PURPOSE:
         ///     Measures the average cost of a single OmniResourceBroker tick when the
-        ///     reference Pathfinder base (5 Haciendas, 4 Casas) is populated with
+        ///     reference base (5 factories, 4 habs) is populated with
         ///     synthetic converters that emulate the *slowest overall throughput*
         ///     OMNICONVERTER observed in the real data set.
         ///
         /// REFERENCE BASE:
-        ///     • 5 Hacienda parts, each with 6 converters  → 30 converters
-        ///     • 4 Casa parts, each with 2 converters      →  8 converters
+        ///     • 5 Factory parts, each with 6 converters  → 30 converters
+        ///     • 4 Hab parts, each with 2 converters      →  8 converters
         ///       --------------------------------------------------------
         ///       Total converters                          → 38 converters
         ///
@@ -409,15 +409,15 @@ namespace OmniWorks.Tests
         ///         - Per-input amount/sec  = 0.25134 / 3
         ///         - Per-output amount/sec = 0.00074
         ///
-        ///     • "Hacienda" converters:
+        ///     • "Factory" converters:
         ///         - Inputs:  resource IDs { 1, 2, 3 }
         ///         - Outputs: resource ID  { 100 }
-        ///     • "Casa" converters:
+        ///     • "Hab" converters:
         ///         - Inputs:  resource IDs { 4, 5, 6 }
         ///         - Outputs: resource ID  { 101 }
         ///
         /// TEST EXECUTION:
-        ///     • Create 30 Hacienda converters and 8 Casa converters using the
+        ///     • Create 30 Factory converters and 8 Hab converters using the
         ///       slow-throughput pattern above.
         ///     • Register all 38 with a single OmniResourceBroker instance.
         ///     • Run 100 warmup ticks (unmeasured) to stabilize JIT and caches.
@@ -428,7 +428,7 @@ namespace OmniWorks.Tests
         /// WHY THIS TEST MATTERS:
         ///     This test answers:
         ///
-        ///         "If my Pathfinder base is made entirely of low-throughput,
+        ///         "If my  base is made entirely of low-throughput,
         ///          trickle-rate converters, does that materially change broker
         ///          performance compared to average or high-throughput cases?"
         ///
@@ -438,17 +438,17 @@ namespace OmniWorks.Tests
         ///     hidden bottlenecks.
         /// </summary>
         [Fact]
-        public void Broker_Performance_ReferencePathfinderBase_SlowestThroughputConverters_IsUnderBudget()
+        public void Broker_Performance_ReferenceBase_SlowestThroughputConverters_IsUnderBudget()
         {
             // --- Arrange ---
-            const int haciendaCount = 5;
-            const int convertersPerHacienda = 6;
-            const int casaCount = 4;
-            const int convertersPerCasa = 2;
+            const int factoryCount = 5;
+            const int convertersPerFactory = 6;
+            const int habCount = 4;
+            const int convertersPerHab = 2;
 
-            const int haciendaConverterCount = haciendaCount * convertersPerHacienda; // 30
-            const int casaConverterCount = casaCount * convertersPerCasa;             //  8
-            const int totalConverterCount = haciendaConverterCount + casaConverterCount; // 38
+            const int factoryConverterCount = factoryCount * convertersPerFactory; // 30
+            const int habConverterCount = habCount * convertersPerHab;             //  8
+            const int totalConverterCount = factoryConverterCount + habConverterCount; // 38
 
             // Slowest-throughput totals derived from real OMNICONVERTER analysis.
             const double totalInputThroughputPerConverter = 0.25134;  // units/sec (3 inputs combined)
@@ -463,16 +463,16 @@ namespace OmniWorks.Tests
             var broker = new OmniResourceBroker();
             var contexts = new List<MultiResourceConverterContext>(totalConverterCount);
 
-            // "Hacienda" converters: 3 inputs (1,2,3), 1 output (100)
-            int[] haciendaInputResourceIds = { 1, 2, 3 };
-            int[] haciendaOutputResourceIds = { 100 };
+            // "Factory" converters: 3 inputs (1,2,3), 1 output (100)
+            int[] factoryInputResourceIds = { 1, 2, 3 };
+            int[] factoryOutputResourceIds = { 100 };
 
-            for (int index = 0; index < haciendaConverterCount; index++)
+            for (int index = 0; index < factoryConverterCount; index++)
             {
                 var context = new MultiResourceConverterContext(
-                    inputResourceIds: haciendaInputResourceIds,
+                    inputResourceIds: factoryInputResourceIds,
                     inputAmountPerSecond: inputAmountPerSecond,
-                    outputResourceIds: haciendaOutputResourceIds,
+                    outputResourceIds: factoryOutputResourceIds,
                     outputAmountPerSecond: outputAmountPerSecond);
 
                 var converter = new OmniResourceConverter();
@@ -482,16 +482,16 @@ namespace OmniWorks.Tests
                 contexts.Add(context);
             }
 
-            // "Casa" converters: 3 inputs (4,5,6), 1 output (101)
-            int[] casaInputResourceIds = { 4, 5, 6 };
-            int[] casaOutputResourceIds = { 101 };
+            // "Hab" converters: 3 inputs (4,5,6), 1 output (101)
+            int[] habInputResourceIds = { 4, 5, 6 };
+            int[] habOutputResourceIds = { 101 };
 
-            for (int index = 0; index < casaConverterCount; index++)
+            for (int index = 0; index < habConverterCount; index++)
             {
                 var context = new MultiResourceConverterContext(
-                    inputResourceIds: casaInputResourceIds,
+                    inputResourceIds: habInputResourceIds,
                     inputAmountPerSecond: inputAmountPerSecond,
-                    outputResourceIds: casaOutputResourceIds,
+                    outputResourceIds: habOutputResourceIds,
                     outputAmountPerSecond: outputAmountPerSecond);
 
                 var converter = new OmniResourceConverter();
@@ -524,7 +524,7 @@ namespace OmniWorks.Tests
 
             PerfTestLog.Report(
                 testOutput,
-                nameof(Broker_Performance_ReferencePathfinderBase_SlowestThroughputConverters_IsUnderBudget),
+                nameof(Broker_Performance_ReferenceBase_SlowestThroughputConverters_IsUnderBudget),
                 averageMillisecondsPerTick);
 
             // --- Assert ---

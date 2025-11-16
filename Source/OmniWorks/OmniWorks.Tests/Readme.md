@@ -36,7 +36,7 @@ OmniWorks.Tests/
  │
  ├── Performance
  │     • Synthetic average converters
- │     • Pathfinder Reference Base (~38 converters)
+ │     • Reference Base (~38 converters)
  │     • Max fan‑in / fan‑out (5 inputs, 3 outputs)
  │     • Slowest-throughput converters
  │     • 64 input / 64 output enumeration stress test
@@ -131,7 +131,7 @@ All values below: **steady**, **repeatable**, and **under budget**.
 | Scenario | Avg ms/tick | Budget | Status |
 |---------|-------------|--------|--------|
 | Synthetic average converters | ~0.0045 | 0.05 | ✅ |
-| Pathfinder 38‑converter base | ~0.0026 | 0.03 | ✅ |
+| Reference 38‑converter base | ~0.0026 | 0.03 | ✅ |
 | Max fan‑in/out | ~0.0037 | 0.04 | ✅ |
 | Slowest-throughput converters | ~0.003 | 0.03 | ✅ |
 | 64-in / 64-out converter | ~0.008 | 0.05 | ✅ |
