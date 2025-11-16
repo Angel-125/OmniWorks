@@ -1,0 +1,6 @@
+C:\Projects\KSA\OmniWorks\Source\OmniWorks\OmniWorks\bin\Debug\OmniWorks.dll
+C:\Projects\KSA\OmniWorks\Source\OmniWorks\OmniWorks\bin\Debug\OmniWorks.pdb
+C:\Projects\KSA\OmniWorks\Source\OmniWorks\OmniWorks\obj\Debug\OmniWorks.csproj.AssemblyReference.cache
+C:\Projects\KSA\OmniWorks\Source\OmniWorks\OmniWorks\obj\Debug\OmniWorks.csproj.CoreCompileInputs.cache
+C:\Projects\KSA\OmniWorks\Source\OmniWorks\OmniWorks\obj\Debug\OmniWorks.dll
+C:\Projects\KSA\OmniWorks\Source\OmniWorks\OmniWorks\obj\Debug\OmniWorks.pdb
